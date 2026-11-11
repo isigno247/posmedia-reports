@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mondelez ve vyhledávání na Rohlik.cz</title>
+<style>
+:root{--acc:#F19500;--fg:#1d1d1b;--mut:#6b6b66;--bg:#f6f5f2;--panel:#fff;--line:#e4e2dc;--grid:#ecebe6;--muted-bar:#c9c7bf;--bad:#c0392b;--ok:#2e7d4f;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--fg:#ecebe6;--mut:#a3a29c;--bg:#161615;--panel:#1f1f1d;--line:#34332f;--grid:#2a2a27;--muted-bar:#55544f;--bad:#e5695b;--ok:#5cc08a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 20px 40px;display:grid;gap:20px}
+.brand{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mut);letter-spacing:.06em;text-transform:uppercase}
+.brand b{color:var(--acc);letter-spacing:.08em}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(26px,4vw,36px);margin:0;line-height:1.15}
+.sub{margin:6px 0 0;color:var(--mut);font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;min-width:0;position:relative}
+.card h2{font-size:17px;font-weight:600;margin:0}
+.card .cap{font-size:12.5px;color:var(--mut);margin:4px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:7px 15px;font:inherit;font-size:14px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.tiles{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr))}
+.lbl{font-size:12px;color:var(--mut)}
+.big{font-family:Georgia,"Times New Roman",serif;font-size:34px;line-height:1.1;margin-top:8px;font-variant-numeric:tabular-nums}
+.big.acc{color:var(--acc)}
+.mid{font-size:18px;font-weight:600;margin-top:8px}
+.grid2{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr))}
+.bars{margin-top:14px;display:grid;grid-template-columns:max-content 1fr;gap:8px 10px;align-items:center}
+.bar{display:contents;font-size:13px}.bar>*{font-size:13px}
+.bar .name{text-align:right;white-space:nowrap}
+.bar .track{position:relative;height:26px;background:var(--grid);border-radius:5px}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--acc)}
+.bar .val{position:absolute;top:50%;transform:translateY(-50%);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar.click>*{cursor:pointer}.bar.click .track:hover{outline:2px solid var(--acc);outline-offset:1px}
+.bar.dim .fill{opacity:.5}.bar.sel .name{font-weight:700}
+.bar.oth .fill{background:var(--muted-bar)}.bar.cli .name{font-weight:700}
+.bar.slim .track{height:22px;background:transparent}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--mut);margin-top:10px}
+.legend i{width:11px;height:11px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:-1px}
+.tbox{overflow-x:auto;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:600;color:var(--mut);border-bottom:1px solid var(--line);padding:6px 8px;white-space:nowrap}
+td{padding:7px 8px;border-bottom:1px solid var(--line)}
+.num{text-align:right}
+.rank{display:inline-block;min-width:36px;text-align:center;font-weight:600;border-radius:6px;padding:1px 4px}
+.rank.top{background:var(--acc);color:#fff}.rank.midr{background:color-mix(in srgb,var(--acc) 20%,transparent)}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-weight:600;white-space:nowrap;font-size:12px}
+.pill.bad{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.alert{border-left:4px solid var(--acc)}
+.alert .big.bad{color:var(--bad)}.alert .big.okc{color:var(--ok)}
+details{font-size:12.5px;color:var(--mut)}summary{cursor:pointer}
+footer{font-size:11.5px;color:var(--mut);text-align:center}
+@media print{body{background:#fff}.chips{display:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="brand"><b>POS Media</b><span>Retail Media · Rohlik.cz</span></div>
+<header>
+<h1 id="title"></h1>
+<p class="sub" id="subtitle"></p>
+</header>
+<section class="card">
+<h2 id="prehled-h"></h2>
+<p class="cap" id="prehled-cap"></p>
+<div class="bars" id="prehled"></div>
+</section>
+<div class="chips" id="chips" role="group" aria-label="Vyberte dotaz"></div>
+<section class="tiles">
+<div class="card"><div class="lbl" id="t10-l"></div><div class="big acc" id="t10"></div></div>
+<div class="card"><div class="lbl" id="t20-l"></div><div class="big" id="t20"></div></div>
+<div class="card"><div class="lbl" id="best-l"></div><div class="big" id="best"></div></div>
+<div class="card"><div class="lbl">Reklama na 1. místě</div><div class="mid" id="ad1"></div><div class="lbl">značka, kolikrát ze <span class="np"></span> měření</div></div>
+<div class="card"><div class="lbl">Počet výsledků dotazu</div><div class="big" id="hits"></div></div>
+</section>
+<div class="grid2">
+<section class="card">
+<h2>Kdo vlastní první stránku</h2>
+<p class="cap">Podíl značek v top 20 organických výsledků vybraného dotazu.</p>
+<div class="bars" id="znacky"></div>
+<div class="legend"><span><i style="background:var(--acc)"></i><span class="kl"></span></span><span><i style="background:var(--muted-bar)"></i>konkurence</span></div>
+</section>
+<section class="card">
+<h2 id="prod-h"></h2>
+<p class="cap">Nejlépe umístěné SKU na vybraný dotaz (organické místo, medián <span class="np"></span> měření).</p>
+<div class="tbox"><table><thead><tr><th class="num">Místo</th><th>Produkt</th><th>SKU</th></tr></thead><tbody id="produkty"></tbody></table></div>
+</section>
+</div>
+<section class="card alert" id="chyb">
+<h2>Chybějící klíčové slovo = produkt není vidět</h2>
+<p class="cap" id="chyb-popis"></p>
+<div class="tiles" style="margin-top:12px">
+<div><div class="big bad" id="miss-n"></div><div class="lbl" id="miss-l"></div></div>
+<div><div class="big okc" id="ok-n"></div><div class="lbl" id="ok-l"></div></div>
+</div>
+<div class="tbox"><table><thead><tr><th>Produkt</th><th>SKU</th><th id="chyb-th3"></th><th id="chyb-th4"></th></tr></thead><tbody id="chybejici"></tbody></table></div>
+</section>
+<details>
+<summary>Jak měříme</summary>
+<p id="metodika"></p>
+</details>
+<footer id="foot"></footer>
+</div>
+<script id="data" type="application/json">{"meta": {"klient": "Mondelez", "znacky_klienta": ["Milka", "Oreo", "Opavia", "Figaro", "Toblerone", "Cadbury"], "produktove_znacky": "Milka a Oreo", "datum": "11. 11. 2026", "sklad": "Chrášťany", "pruchody": 3, "vychozi_dotaz": "mléčná čokoláda", "klient_gen": "Mondelezu"}, "dotazy": [{"dotaz": "čokoláda", "vysledku": 1039, "podil_top10": 30, "podil_top20": 20, "milka_oreo_top20": 15, "nejlepsi_misto": 6, "lidr": "Lindt", "reklama_1": "Lindt (1/3)"}, {"dotaz": "mléčná čokoláda", "vysledku": 363, "podil_top10": 70, "podil_top20": 57, "milka_oreo_top20": 47, "nejlepsi_misto": 2, "lidr": "Milka", "reklama_1": "Lindt (3/3)"}, {"dotaz": "sušenky", "vysledku": 544, "podil_top10": 50, "podil_top20": 52, "milka_oreo_top20": 15, "nejlepsi_misto": 13, "lidr": "Opavia", "reklama_1": "Opavia (3/3)"}, {"dotaz": "čokoládové sušenky", "vysledku": 145, "podil_top10": 33, "podil_top20": 35, "milka_oreo_top20": 13, "nejlepsi_misto": 3, "lidr": "Opavia", "reklama_1": "Opavia (3/3)"}, {"dotaz": "sušenky s náplní", "vysledku": 75, "podil_top10": 60, "podil_top20": 65, "milka_oreo_top20": 60, "nejlepsi_misto": 2, "lidr": "Oreo", "reklama_1": "bez reklamy"}], "znacky": [{"dotaz": "čokoláda", "znacka": "Lindt", "podil": 45, "mondelez": "ne"}, {"dotaz": "čokoláda", "znacka": "Schogetten", "podil": 15, "mondelez": "ne"}, {"dotaz": "čokoláda", "znacka": "Milka", "podil": 15, "mondelez": "ano"}, {"dotaz": "čokoláda", "znacka": "Alnatura", "podil": 10, "mondelez": "ne"}, {"dotaz": "čokoláda", "znacka": "Figaro", "podil": 5, "mondelez": "ano"}, {"dotaz": "čokoláda", "znacka": "Marks & Spencer", "podil": 5, "mondelez": "ne"}, {"dotaz": "čokoláda", "znacka": "Ostatní", "podil": 5, "mondelez": "ne"}, {"dotaz": "mléčná čokoláda", "znacka": "Milka", "podil": 47, "mondelez": "ano"}, {"dotaz": "mléčná čokoláda", "znacka": "Lindt", "podil": 15, "mondelez": "ne"}, {"dotaz": "mléčná čokoláda", "znacka": "Schogetten", "podil": 8, "mondelez": "ne"}, {"dotaz": "mléčná čokoláda", "znacka": "Alnatura", "podil": 5, "mondelez": "ne"}, {"dotaz": "mléčná čokoláda", "znacka": "Studentská pečeť", "podil": 5, "mondelez": "ne"}, {"dotaz": "mléčná čokoláda", "znacka": "Toblerone", "podil": 5, "mondelez": "ano"}, {"dotaz": "mléčná čokoláda", "znacka": "Ostatní", "podil": 15, "mondelez": "ne"}, {"dotaz": "sušenky", "znacka": "Opavia", "podil": 37, "mondelez": "ano"}, {"dotaz": "sušenky", "znacka": "Yutto", "podil": 20, "mondelez": "ne"}, {"dotaz": "sušenky", "znacka": "Sedita", "podil": 13, "mondelez": "ne"}, {"dotaz": "sušenky", "znacka": "Oreo", "podil": 10, "mondelez": "ano"}, {"dotaz": "sušenky", "znacka": "Lotus Biscoff", "podil": 5, "mondelez": "ne"}, {"dotaz": "sušenky", "znacka": "Milka", "podil": 5, "mondelez": "ano"}, {"dotaz": "sušenky", "znacka": "Ostatní", "podil": 10, "mondelez": "ne"}, {"dotaz": "čokoládové sušenky", "znacka": "Opavia", "podil": 22, "mondelez": "ano"}, {"dotaz": "čokoládové sušenky", "znacka": "Yutto", "podil": 15, "mondelez": "ne"}, {"dotaz": "čokoládové sušenky", "znacka": "Emco", "podil": 15, "mondelez": "ne"}, {"dotaz": "čokoládové sušenky", "znacka": "Gullón", "podil": 10, "mondelez": "ne"}, {"dotaz": "čokoládové sušenky", "znacka": "Milka", "podil": 8, "mondelez": "ano"}, {"dotaz": "čokoládové sušenky", "znacka": "Papita", "podil": 5, "mondelez": "ne"}, {"dotaz": "čokoládové sušenky", "znacka": "Ostatní", "podil": 25, "mondelez": "ne"}, {"dotaz": "sušenky s náplní", "znacka": "Oreo", "podil": 45, "mondelez": "ano"}, {"dotaz": "sušenky s náplní", "znacka": "Milka", "podil": 15, "mondelez": "ano"}, {"dotaz": "sušenky s náplní", "znacka": "Yutto", "podil": 5, "mondelez": "ne"}, {"dotaz": "sušenky s náplní", "znacka": "Lambertz", "podil": 5, "mondelez": "ne"}, {"dotaz": "sušenky s náplní", "znacka": "Sedita", "podil": 5, "mondelez": "ne"}, {"dotaz": "sušenky s náplní", "znacka": "Mokate", "podil": 5, "mondelez": "ne"}, {"dotaz": "sušenky s náplní", "znacka": "Ostatní", "podil": 20, "mondelez": "ne"}], "produkty": [{"klic": "čokoláda · 719595", "dotaz": "čokoláda", "sku": "719595", "znacka": "Milka", "produkt": "Milka čokoláda Mléčná z alpského mléka", "misto": 6}, {"klic": "čokoláda · 1407939", "dotaz": "čokoláda", "sku": "1407939", "znacka": "Milka", "produkt": "Milka Čokoláda bílá", "misto": 7}, {"klic": "čokoláda · 1294159", "dotaz": "čokoláda", "sku": "1294159", "znacka": "Milka", "produkt": "Milka Čokoláda Mmmax mléčná", "misto": 20}, {"klic": "čokoláda · 1407940", "dotaz": "čokoláda", "sku": "1407940", "znacka": "Milka", "produkt": "Milka Čokoláda Bubbly mléčná s bublinkami", "misto": 29}, {"klic": "čokoláda · 719625", "dotaz": "čokoláda", "sku": "719625", "znacka": "Milka", "produkt": "Milka Čokoláda oříšková mléčná, celé lískové ořechy", "misto": 35}, {"klic": "čokoláda · 1483445", "dotaz": "čokoláda", "sku": "1483445", "znacka": "Milka", "produkt": "Milka Čokoláda Extra Fun sušenka a želé", "misto": 36}, {"klic": "mléčná čokoláda · 719595", "dotaz": "mléčná čokoláda", "sku": "719595", "znacka": "Milka", "produkt": "Milka čokoláda Mléčná z alpského mléka", "misto": 2}, {"klic": "mléčná čokoláda · 1294159", "dotaz": "mléčná čokoláda", "sku": "1294159", "znacka": "Milka", "produkt": "Milka Čokoláda Mmmax mléčná", "misto": 3}, {"klic": "mléčná čokoláda · 719625", "dotaz": "mléčná čokoláda", "sku": "719625", "znacka": "Milka", "produkt": "Milka Čokoláda oříšková mléčná, celé lískové ořechy", "misto": 6}, {"klic": "mléčná čokoláda · 1483445", "dotaz": "mléčná čokoláda", "sku": "1483445", "znacka": "Milka", "produkt": "Milka Čokoláda Extra Fun sušenka a želé", "misto": 7}, {"klic": "mléčná čokoláda · 719639", "dotaz": "mléčná čokoláda", "sku": "719639", "znacka": "Milka", "produkt": "Milka čokoláda Happy Cow mléčná a bílá", "misto": 8}, {"klic": "mléčná čokoláda · 719671", "dotaz": "mléčná čokoláda", "sku": "719671", "znacka": "Milka", "produkt": "Milka Čokoláda jahodová mléčná", "misto": 9}, {"klic": "sušenky · 1468420", "dotaz": "sušenky", "sku": "1468420", "znacka": "Milka", "produkt": "Milka sušenky Choco pause plněné jemnou čokoládovou", "misto": 13}, {"klic": "sušenky · 1478977", "dotaz": "sušenky", "sku": "1478977", "znacka": "Oreo", "produkt": "Oreo sušenky mini s vanilkovou náplní", "misto": 15}, {"klic": "sušenky · 720097", "dotaz": "sušenky", "sku": "720097", "znacka": "Oreo", "produkt": "Oreo Sušenky s vanilkovou náplní", "misto": 18}, {"klic": "sušenky · 1352259", "dotaz": "sušenky", "sku": "1352259", "znacka": "Oreo", "produkt": "Oreo Sušenky s vanilkovou náplní", "misto": 25}, {"klic": "sušenky · 1475245", "dotaz": "sušenky", "sku": "1475245", "znacka": "Oreo", "produkt": "Oreo Spooky sušenky s vanilkovou náplní", "misto": 26}, {"klic": "sušenky · 719647", "dotaz": "sušenky", "sku": "719647", "znacka": "Milka", "produkt": "Milka sušenky Choco Biscuits s čokoládou", "misto": 28}, {"klic": "čokoládové sušenky · 719647", "dotaz": "čokoládové sušenky", "sku": "719647", "znacka": "Milka", "produkt": "Milka sušenky Choco Biscuits s čokoládou", "misto": 3}, {"klic": "čokoládové sušenky · 1478977", "dotaz": "čokoládové sušenky", "sku": "1478977", "znacka": "Oreo", "produkt": "Oreo sušenky mini s vanilkovou náplní", "misto": 9}, {"klic": "čokoládové sušenky · 1352167", "dotaz": "čokoládové sušenky", "sku": "1352167", "znacka": "Milka", "produkt": "Milka sušenky Choco Mini Stars mléčná náplň a čokoláda", "misto": 20}, {"klic": "čokoládové sušenky · 1407995", "dotaz": "čokoládové sušenky", "sku": "1407995", "znacka": "Milka", "produkt": "Milka sušenky Choco Sticks celomáčené, mléčná čokoláda", "misto": 22}, {"klic": "čokoládové sušenky · 1468419", "dotaz": "čokoládové sušenky", "sku": "1468419", "znacka": "Milka", "produkt": "Milka sušenky White Choco Mini Stars kakaové, mléčná náplň", "misto": 30}, {"klic": "čokoládové sušenky · 1407975", "dotaz": "čokoládové sušenky", "sku": "1407975", "znacka": "Milka", "produkt": "Milka sušenky Cookie Sensations s náplní a kousky čokolády", "misto": 32}, {"klic": "sušenky s náplní · 1468420", "dotaz": "sušenky s náplní", "sku": "1468420", "znacka": "Milka", "produkt": "Milka sušenky Choco pause plněné jemnou čokoládovou", "misto": 2}, {"klic": "sušenky s náplní · 720097", "dotaz": "sušenky s náplní", "sku": "720097", "znacka": "Oreo", "produkt": "Oreo Sušenky s vanilkovou náplní", "misto": 3}, {"klic": "sušenky s náplní · 1352259", "dotaz": "sušenky s náplní", "sku": "1352259", "znacka": "Oreo", "produkt": "Oreo Sušenky s vanilkovou náplní", "misto": 5}, {"klic": "sušenky s náplní · 1478977", "dotaz": "sušenky s náplní", "sku": "1478977", "znacka": "Oreo", "produkt": "Oreo sušenky mini s vanilkovou náplní", "misto": 6}, {"klic": "sušenky s náplní · 1421548", "dotaz": "sušenky s náplní", "sku": "1421548", "znacka": "Oreo", "produkt": "Oreo Sušenky Golden s náplní s vanilkovou příchutí", "misto": 8}, {"klic": "sušenky s náplní · 1478978", "dotaz": "sušenky s náplní", "sku": "1478978", "znacka": "Oreo", "produkt": "Oreo Sušenky s vanilkovou náplní", "misto": 9}], "chybejici": {"dotaz": "čokoládové sušenky", "slovo": "čokoládové", "popis": "Dotaz „čokoládové sušenky“ Rohlík sám doporučuje v našeptávači. Produkty bez tohoto slova v backendu se na něj nezobrazí vůbec, ani kdyby běžela placená kampaň.", "radky": [{"sku": "1483141", "produkt": "Oreo Remix Sušenky kakaové s náplní s vanilkovou a malinovou příchutí", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1483146", "produkt": "Oreo Sušenky kakaové s náplní Cookie Dough a vanilkovou příchutí", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1408011", "produkt": "Oreo Sušenky Double Creme s dvojitou vanilkovou náplní", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "720097", "produkt": "Oreo Sušenky s vanilkovou náplní", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1478978", "produkt": "Oreo Sušenky s vanilkovou náplní", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1352259", "produkt": "Oreo Sušenky s vanilkovou náplní", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1483698", "produkt": "Oreo Sušenky limitovaná edice BTS s příchutí vanilky a karamelu", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1475236", "produkt": "Oreo Sušenky s perníčkovou příchutí", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1475245", "produkt": "Oreo Spooky sušenky s vanilkovou náplní", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1421548", "produkt": "Oreo Sušenky Golden s náplní s vanilkovou příchutí", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1407948", "produkt": "Milka sušenky kakaové Cookie Sensations s náplní s vanilkovou příchutí", "slovo_v_backendu": "ne", "na_dotaz": "nezobrazí se"}, {"sku": "1478977", "produkt": "Oreo sušenky mini s vanilkovou náplní", "slovo_v_backendu": "ano", "na_dotaz": "9. místo"}]}}</script>
+<script>
+(function(){
+const D=JSON.parse(document.getElementById('data').textContent), M=D.meta;
+const $=id=>document.getElementById(id), el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
+const K=M.klient,KG=M.klient_gen||M.klient, NP=M.pruchody;
+let Q=M.vychozi_dotaz||D.dotazy[0].dotaz;
+document.title=K+' ve vyhledávání na Rohlik.cz';
+$('title').textContent=K+' ve vyhledávání na Rohlik.cz';
+$('subtitle').textContent='Měření POS Media · '+M.datum+' · anonymně, sklad '+M.sklad+', '+NP+' průchody (medián) · organické výsledky bez reklam';
+$('prehled-h').textContent='Podíl '+KG+' v top 10 organických výsledků';
+$('prehled-cap').textContent='Kolik z prvních 10 neplacených produktů patří značkám '+K+' ('+M.znacky_klienta.join(', ')+'). Klikněte na dotaz pro detail.';
+$('t10-l').textContent='Podíl '+KG+' · top 10';$('t20-l').textContent='Podíl '+KG+' · top 20';
+$('best-l').textContent='Nejlepší místo '+M.produktove_znacky;$('prod-h').textContent='Kde jsou produkty '+M.produktove_znacky;
+document.querySelectorAll('.np').forEach(e=>e.textContent=NP);document.querySelectorAll('.kl').forEach(e=>e.textContent=K);
+const C=D.chybejici;
+$('chyb-popis').textContent=C.popis;$('chyb-th3').textContent='„'+C.slovo+'“ v backendu';$('chyb-th4').textContent='Na dotaz „'+C.dotaz+'“';
+$('metodika').textContent='Dotazy posíláme anonymně (bez přihlášení a cookies) na sklad '+M.sklad+', každý '+NP+'×, a bereme medián. Organické pořadí = výsledky bez sponzorovaných pozic. Podíl značky = kolik z prvních 10 nebo 20 organických produktů patří dané značce. Počet výsledků ukazuje nabídku, ne hledanost. Měříme viditelnost, ne prodeje. V provozu se měření opakuje pravidelně a report ukazuje vývoj v čase, dopad nasazených klíčových slov a reklamní pozice konkurence.';
+$('foot').textContent='POS Media Czech Republic · data k '+M.datum;
+function bars(host,rows,opt){host.replaceChildren();const max=opt.max||Math.max(...rows.map(r=>r.v),1);
+rows.forEach(r=>{const b=el('div','bar'+(r.cls?' '+r.cls:''));b.append(el('div','name',r.name));const tr=el('div','track');const f=el('div','fill');f.style.width=(r.v/max*100)+'%';const v=el('div','val',r.v+' %');const w=r.v/max*100;
+if(w>82){v.style.left='calc('+w+'% - 8px)';v.style.transform='translate(-100%,-50%)';v.style.color='#fff'}else v.style.left='calc('+w+'% + 8px)';tr.append(f,v);b.append(tr);if(r.click){b.classList.add('click');b.querySelectorAll(':scope>*').forEach(c=>c.addEventListener('click',r.click))}host.append(b)})}
+function chips(){const h=$('chips');h.replaceChildren();D.dotazy.forEach(r=>{const b=el('button','chip',r.dotaz);b.type='button';b.setAttribute('aria-pressed',r.dotaz===Q);b.addEventListener('click',()=>{Q=r.dotaz;render()});h.append(b)})}
+function render(){
+chips();
+bars($('prehled'),D.dotazy.map(r=>({name:r.dotaz,v:r.podil_top10,cls:r.dotaz===Q?'sel':'dim',click:()=>{Q=r.dotaz;render()}})),{max:100});
+const r=D.dotazy.find(x=>x.dotaz===Q);
+$('t10').textContent=r.podil_top10+' %';$('t20').textContent=r.podil_top20+' %';$('best').textContent=r.nejlepsi_misto+'.';
+$('ad1').textContent=r.reklama_1;$('hits').textContent=String(r.vysledku).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+bars($('znacky'),D.znacky.filter(z=>z.dotaz===Q).map(z=>({name:z.znacka,v:z.podil,cls:(z.mondelez==='ano'?'cli':'oth')+' slim'})),{});
+const tb=$('produkty');tb.replaceChildren();
+D.produkty.filter(p=>p.dotaz===Q).sort((a,b)=>a.misto-b.misto).forEach(p=>{const tr=el('tr');const td=el('td','num');td.append(el('span','rank '+(p.misto<=10?'top':p.misto<=20?'midr':''),p.misto+'.'));tr.append(td,el('td',null,p.produkt),el('td',null,p.sku));tb.append(tr)});
+}
+const rows=[...C.radky].sort((a,b)=>(a.na_dotaz==='nezobrazí se'?0:1)-(b.na_dotaz==='nezobrazí se'?0:1));
+const miss=rows.filter(x=>x.na_dotaz==='nezobrazí se'),ok=rows.filter(x=>x.na_dotaz!=='nezobrazí se');
+$('miss-n').textContent=miss.length;$('miss-l').textContent='SKU se na dotaz „'+C.dotaz+'“ nezobrazí';
+$('ok-n').textContent=ok.length;$('ok-l').textContent=ok.length?('má slovo v backendu → '+ok.map(x=>x.na_dotaz).join(', ')):'';
+const tb=$('chybejici');rows.forEach(x=>{const tr=el('tr');const p=el('td');p.append(el('span','pill '+(x.na_dotaz==='nezobrazí se'?'bad':'ok'),x.na_dotaz));tr.append(el('td',null,x.produkt),el('td',null,x.sku),el('td',null,x.slovo_v_backendu),p);tb.append(tr)});
+render();
+})();
+</script>
+</body>
+</html>
